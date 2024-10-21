@@ -61,6 +61,11 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function Header() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const[CartItems,setCartItems]=React.useState([])
+
+
+  console.log(CartItems?.length,'CartItemsCartItems');
+  
 
   const [open, setOpen] = React.useState(false);
 
@@ -129,7 +134,7 @@ export default function Header() {
     >
       <MenuItem>
         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="error">
+          <Badge badgeContent={CartItems?.length } color="error">
             <ShoppingCartIcon  onClick={toggleDrawer(true)}/>
           </Badge>
         </IconButton>
@@ -162,6 +167,14 @@ export default function Header() {
     </Menu>
   );
 
+
+
+
+  React.useEffect(() => {
+    const CartItemArray = localStorage.getItem("CartList");
+    const parsedCartItemArray = JSON.parse(CartItemArray) || [];
+    setCartItems(parsedCartItemArray);
+  }, []);
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -183,7 +196,7 @@ export default function Header() {
           >
             MUI
           </Typography>
-          <Search>
+          {/* <Search>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
@@ -191,11 +204,11 @@ export default function Header() {
               placeholder="Search…"
               inputProps={{ 'aria-label': 'search' }}
             />
-          </Search>
+          </Search> */}
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="error">
+              <Badge badgeContent={CartItems?.length} color="error">
                 <ShoppingCartIcon  onClick={toggleDrawer(true)} />
               </Badge>
             </IconButton>

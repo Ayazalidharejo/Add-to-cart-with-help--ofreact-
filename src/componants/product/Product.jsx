@@ -1,4 +1,4 @@
-import { Box, Button, Card, IconButton, Snackbar, Typography } from '@mui/material'
+import { Box, Button, Card, IconButton, Snackbar, TextField, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import Product1 from "../../Images/cat-01.jpg"
 import Product2 from "../../Images/cat-02.jpg"
@@ -15,6 +15,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import CloseIcon from '@mui/icons-material/Close';
 import CartList from '../cart_list/Cart_List'
+import { Filter } from '@mui/icons-material'
 
 
 
@@ -40,23 +41,23 @@ const products =[
     {
         id:4,
         img:Product4,
-        name:'Product 3',
+        name:'Product 4',
         Price:'22',
     },
     {
         id:5,
         img:Product5,
-        name:'Product 3',
+        name:'Product 5',
         Price:'15',
     },
     {id:6,
         img:Product6,
-        name:'Product 3',
+        name:'Product 6',
         Price:'18',
     },
     {id:7,
         img:Product7,
-        name:'Product 3',
+        name:'Product 7',
         Price:'19',
     }
 
@@ -64,6 +65,10 @@ const products =[
 
 const Product = () => {
     const [OpenAlert,setOpenAlert]=useState(false)
+
+    const [Project,setProject]=useState(products)
+    console.log(products);
+    
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
           return;
@@ -84,8 +89,12 @@ const Product = () => {
       
         if(!isExits){
             setCartlist((old)=>[...old,Product])
-            let strCartList =JSON.stringify(Cartlist)
-            localStorage.setItem('CartList',strCartList)
+
+          
+
+
+
+
         }else{
          setOpenAlert(true)
         }
@@ -95,10 +104,35 @@ const Product = () => {
         
     };
    
+
+
+
+    useEffect (()=>{
+// let localItems =localStorage.getItem("CartList")
+
+if (Cartlist.length >0) {
+    
+    let strCartList =JSON.stringify(Cartlist)
+    localStorage.setItem('CartList',strCartList)
+}
+
+     
+
+    },[Cartlist])
+
+
+
+    const Searchhandler =(event )=>{
+        const filterarry= products?.Filter((products)=> products?.name === event?.target?.value)
+
+console.log(filterarry);
+
+    }
   return (
 
 
 <>
+<Box className="container mt-3"><TextField onChange={Searchhandler}   placeholder="Search Item" size='small'/></Box>
 <Snackbar style={{backgroundColor:'red'}}
 anchorOrigin={{ vertical:'top', horizontal:'right' }}
         open={OpenAlert}
@@ -113,6 +147,7 @@ anchorOrigin={{ vertical:'top', horizontal:'right' }}
         <>
       
     <Box key={index} sx={{padding:'30px', gap:'30px' ,alignItems:'center',border:'1px solid red',textAlign:'center',cursor:'pointer',width:'250px'}}>
+        
 <img className='w-50 itempic' src={Product.img} alt="" />
  
 <Typography variant='h5'> {Product.name}</Typography>
