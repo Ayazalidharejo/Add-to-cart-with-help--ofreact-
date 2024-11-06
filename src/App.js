@@ -10,7 +10,7 @@ import Profuct from './componants/product/Product';
 function App() {
   return (
     <div>
-      <Header/>
+  
       <Profuct/>
       
     </div>

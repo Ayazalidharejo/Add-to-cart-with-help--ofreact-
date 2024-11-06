@@ -12,13 +12,20 @@ import Signin from './componants/outh/Signin/Signin';
 
 
 import Errorpage from './componants/error/Errorpage';
+import Productdeatails from './componants/product-details/Productdeatails';
+import Layout from './componants/Layout/Layout';
 
 
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <Layout />,
+    children:[{
+path:"",
+element :< App/>,
+
+    }],
     errorElement: < Errorpage/>
   },
   {
@@ -28,6 +35,10 @@ const router = createBrowserRouter([
   {
     path: "/sign-in",
     element: <Signin />
+  },
+  {
+path:"/Productdeatails",
+element:<Productdeatails/>
   }
 ]);
 
