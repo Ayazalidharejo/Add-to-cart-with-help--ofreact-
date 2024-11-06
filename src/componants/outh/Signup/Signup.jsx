@@ -9,14 +9,22 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-
+import * as yup from "yup";
 import React, { useState } from "react";
 import Hero from "../../../Images/signup-g.svg";
 import { Password, Visibility, VisibilityOff } from "@mui/icons-material";
-
+import { yupResolver } from '@hookform/resolvers/yup';
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
+import {  Controller } from "react-hook-form";
+const schema = yup.object({
+  firstName: yup.string().min(3).max(10).required("First Name is requied"),
+  email: yup.string().required("Emai is requied"),
+  Password: yup.string().required("Password is requied"),
+  
+
+})
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: "#fff",
   ...theme.typography.body2,
@@ -30,13 +38,22 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const { control, handleSubmit } = useForm({
+
+
+
+
+  
+  const { control, handleSubmit, formState: { errors } } = useForm({
+    
     defaultValues: {
       firstname: "",
       lastname: "",
       email: "",
       Password: "",
+  
+      
     },
+    resolver :yupResolver(schema),
   });
   return (
     <div className="mt-3">
@@ -44,7 +61,7 @@ const Signup = () => {
         <Grid className="text-center" item xs={6}>
           <img className="img-filud" src={Hero} alt="" />
         </Grid>
-        <Grid className="text-center " item xs={6}>
+        <Grid className=" " item xs={6}>
           <Box className="text-center">
             <Typography>Get Start Shopping</Typography>
             <Typography>
@@ -71,7 +88,7 @@ const Signup = () => {
                     placeholder="First Name"
                   />}
                   />
-                 
+                 <p className="text-danger">{errors?. firstName?.message}</p>
                 </Grid>
                 <Grid className="mx-1 " item xs={6} md={6} lg={5.9}>
                 <Controller
@@ -98,6 +115,7 @@ const Signup = () => {
                     placeholder="Email"
                   />}
                   />
+                   <p className="text-danger">{errors?.  email?.message}</p>
                 </Grid>
                 <Grid className="mb-2" item xs={6} md={6} lg={11.9}>
                   
@@ -106,8 +124,10 @@ const Signup = () => {
                     type="showPassword"
                     fullWidth
                     size="small"
+                    placeholder="Password"
                     id="outlined-adornment-weight"
                     type={showPassword ? "text" : "password"}
+                    
                     endAdornment={
                       <InputAdornment position="end">
                         <IconButton
@@ -115,12 +135,14 @@ const Signup = () => {
                             showPassword
                               ? "hide the password"
                               : "display the password"
+                              
                           }
                           edge="end"
                           onClick={() => {
                             setShowPassword(!showPassword);
                           }}
                         >
+                           
                           {showPassword ? <VisibilityOff /> : <Visibility />}
                         </IconButton>
                       </InputAdornment>
@@ -130,6 +152,12 @@ const Signup = () => {
                       "aria-label": "weight",
                     }}
                   />
+                  <p className="text-danger">{errors?.  Password?.message}</p>
+
+
+
+
+                  
                 </Grid>
                 <Grid item xs={12} md={6} lg={11.9}>
                   <Button type="submit" fullWidth variant="contained">
