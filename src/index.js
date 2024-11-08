@@ -37,7 +37,7 @@ element :< App/>,
     element: <Signin />
   },
   {
-path:"/Productdeatails",
+path:"/Productdeatails/:Product_id",
 element:<Productdeatails/>
   }
 ]);

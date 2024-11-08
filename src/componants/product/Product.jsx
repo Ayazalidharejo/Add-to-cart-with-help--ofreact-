@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Card,
+  CircularProgress,
   Grid,
   IconButton,
   Snackbar,
@@ -26,8 +27,9 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import CloseIcon from "@mui/icons-material/Close";
 import CartList from "../cart_list/Cart_List";
 import { Filter } from "@mui/icons-material";
-import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 // const products =[
 //     {
@@ -75,8 +77,9 @@ import axios from "axios";
 
 const Product = () => {
   const [OpenAlert, setOpenAlert] = useState(false);
-
+  const [isloading, setisloading] = useState(false);
   const [Project, setProject] = useState();
+  const navigate = useNavigate();
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -123,9 +126,15 @@ const Product = () => {
   useEffect(() => {
     const Fetchproducts = async () => {
       try {
+        setisloading(true);
         const Products = await axios.get("https://fakestoreapi.com/products");
 
-        setproducts(Products?.data);
+        if (Products.status === 200) {
+          setisloading(false);
+          setproducts(Products?.data);
+        } else {
+          setisloading(true);
+        }
       } catch (error) {
         console.log(error);
       }
@@ -150,95 +159,102 @@ const Product = () => {
         onClose={handleClose}
         message="Product Already in cart List"
       />
-      <Grid container  className="container mt-5">
-        {products?.map((Product, index) => {
-          return (
-            <>
-              <Grid className="mx-3 my-2"
-                item
-                xs={12}
-                md={3}
-                mb={2}
-                sx={{
-                  minHeight: "230px",
-                  maxHeight: "350px",
-               
-                  width:'200px',
-                }}
-              >
-
-
-
-<Card >  <Box  className="d-flex align-items-center flex-column"
-                  key={index}
+      {isloading ? (
+        <p className="text-center mt-5">
+          <CircularProgress color="success" />
+        </p>
+      ) : (
+        <Grid container className="container mt-5">
+          {products?.map((Product, index) => {
+            return (
+              <>
+                <Grid
+                  className="mx-3 my-2"
+                  item
+                  xs={12}
+                  md={3}
+                  mb={2}
                   sx={{
-                    padding: "30px",
-                    gap: "5px",
-                    alignItems: "center",
-                    textAlign: "center",
-                    cursor: "pointer",
-                    width: "250px",
-                   
+                    minHeight: "230px",
+                    maxHeight: "350px",
+
+                    width: "200px",
                   }}
                 >
-                  <img
-                    style={{ maxHeight: "230px", minHeight: "170px "  }}
-                    className="w-50 itempic"
-                    src={Product.image}
-                    alt=""
-                  />
-<Tooltip title={Product.title} placement="top">
-                  <Typography  variant="h6">
+                  <Card>
                     {" "}
-                    {Product?.title?.length >= 13
-                      ? `${Product?.title.slice(0, 13)}...`
-                      : Product?.title}
-                  </Typography></Tooltip>
-                  <Typography className="border " variant="body1"> {Product.price}</Typography>
-                  {/* <Typography variant="body1"> {Product.price}</Typography> */}
-
-
-               
-
-
-                  {/* <Typography variant="body2"> {Product.description}</Typography> */}
-
-
-
-                  <Typography variant="body1"> {Product.category
-                  }</Typography>
-                  <Divider sx={{ borderColor: "#333" }} variant="fullWidth" />
-                  <Box className="d-flex justify-content-between">
-                  <Tooltip title="View details">
-                    <RemoveRedEyeIcon /> </Tooltip >
-
-                    <Tooltip title="Add in favorite ">
-                    <FavoriteIcon className="mx-3" />
-                    </Tooltip>
-
-                    <Tooltip title="Add to cart">
-                    <AddShoppingCartIcon 
-                      onClick={() => {
-                        Carthandler(Product);
+                    <Box
+                      className="d-flex align-items-center flex-column w-100"
+                      key={index}
+                      sx={{
+                        padding: "30px",
+                        gap: "5px",
+                        alignItems: "center",
+                        textAlign: "center",
+                        cursor: "pointer",
+                        width: "250px",
                       }}
-                    />
-                    </Tooltip >
-                  </Box>
-                </Box></Card>
+                    >
+                      <img
+                        style={{ maxHeight: "100px", minHeight: "170px " }}
+                        className="w-50 itempic"
+                        src={Product.image}
+                        alt=""
+                      />
+                      <Tooltip title={Product.title} placement="top">
+                        <Typography variant="h6">
+                          {" "}
+                          {Product?.title?.length >= 13
+                            ? `${Product?.title.slice(0, 13)}...`
+                            : Product?.title}
+                        </Typography>
+                      </Tooltip>
+                      <Typography className=" " variant="body1">
+                        {" "}
+                        {Product.price}
+                      </Typography>
+                      {/* <Typography variant="body1"> {Product.price}</Typography> */}
 
+                      {/* <Typography variant="body2"> {Product.description}</Typography> */}
 
+                      <Typography variant="body1">
+                        {" "}
+                        {Product.category}
+                      </Typography>
+                      <Divider
+                        sx={{ borderColor: "#333" }}
+                        variant="fullWidth"
+                      />
+                      <Box className="d-flex justify-content-between  w-100">
+                        <Tooltip title="View details">
+                          <RemoveRedEyeIcon
+                            onClick={() => {
+                              navigate(`/Productdeatails/${Product?.id}`);
+                              console.log(Product);
+                            }}
+                          />{" "}
+                        </Tooltip>
 
+                        <Tooltip title="Add in favorite ">
+                          <FavoriteIcon className="" />
+                        </Tooltip>
 
-
-
-
-                
-              
-              </Grid>
-            </>
-          );
-        })}
-      </Grid>
+                        <Tooltip title="Add to cart">
+                          <AddShoppingCartIcon
+                            onClick={() => {
+                              Carthandler(Product);
+                            }}
+                          />
+                        </Tooltip>
+                      </Box>
+                    </Box>
+                  </Card>
+                </Grid>
+              </>
+            );
+          })}
+        </Grid>
+      )}
     </>
   );
 };
