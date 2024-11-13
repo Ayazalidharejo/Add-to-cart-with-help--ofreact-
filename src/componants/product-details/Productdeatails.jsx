@@ -1,7 +1,10 @@
-import { CircularProgress, Grid, Typography } from "@mui/material";
+import { Box, CircularProgress, Grid, Typography } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import ShareIcon from '@mui/icons-material/Share';
 
 const Productdeatails = () => {
   const Params = useParams();
@@ -59,6 +62,11 @@ const Productdeatails = () => {
             <Typography variant="h5">
               Price: {productsdetails?.price}
             </Typography>
+            <Box className="d-flex gap-4 mt-4">
+              <button > <FavoriteBorderIcon/> </button>
+              <button> <AddShoppingCartIcon/> </button>
+              <button> <ShareIcon/> </button>
+            </Box>
           </Grid>
           <Grid item md={3} sm={3} lg={3}></Grid>
         </Grid>

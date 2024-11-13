@@ -1,4 +1,5 @@
 import {
+  Autocomplete,
   Box,
   Button,
   Card,
@@ -76,9 +77,13 @@ import { useNavigate } from "react-router-dom";
 // ]
 
 const Product = () => {
+  const [Allproduct,setAllproduct]=useState([])
+  const [products, setproducts] = useState();
   const [OpenAlert, setOpenAlert] = useState(false);
   const [isloading, setisloading] = useState(false);
-  const [Project, setProject] = useState();
+  // const [Project, setProject] = useState();
+  const [Optioncategories, setOptioncategories]=useState ([])
+  const [datafilter,setdatafilter]=useState ({})
   const navigate = useNavigate();
 
   const handleClose = (event, reason) => {
@@ -117,11 +122,11 @@ const Product = () => {
       (products) => products?.name === event?.target?.value
     );
 
-    console.log(filterarry);
+
   };
 
-  const [products, setproducts] = useState();
-  console.log(products);
+ 
+;
 
   useEffect(() => {
     const Fetchproducts = async () => {
@@ -132,6 +137,24 @@ const Product = () => {
         if (Products.status === 200) {
           setisloading(false);
           setproducts(Products?.data);
+          setAllproduct(Products?.data);
+
+          const filtercategoties = Products?.data?.map((item) => {
+            return {
+              label: item?.category.toUpperCase(),
+              value: item?.category,
+
+
+
+            }
+
+
+          })
+          console.log( filtercategoties);
+          const uniquecategories = filtercategoties.filter((item, index, self) => index === self.findIndex((i) => i.value === item.value))
+         
+
+          setOptioncategories(uniquecategories)
         } else {
           setisloading(true);
         }
@@ -142,13 +165,39 @@ const Product = () => {
 
     Fetchproducts();
   }, []);
+
+
+ 
+
+  useEffect(() => {
+ 
+    if (datafilter?.value) {
+      const newFilterData = Allproduct.filter((product) => product?.category === datafilter.value);
+      console.log(newFilterData);
+      setproducts(newFilterData)
+    }
+  }, [datafilter, products]); 
+  
+  
   return (
     <>
-      <Box className="container mt-3">
+      <Box className="container mt-3 d-flex justify-content-between">
         <TextField
           onChange={Searchhandler}
           placeholder="Search Item"
           size="small"
+        />
+
+        <Autocomplete className="me-5" size="small"
+          disablePortal
+          options={ Optioncategories}
+         
+          sx={{ width: 250 }}
+          onChange={(e,newitem)=>{
+            setdatafilter(newitem,);
+            
+          }}
+          renderInput={(params) => <TextField {...params} label="categories" />}
         />
       </Box>
       <Snackbar
