@@ -31,6 +31,8 @@ import { Filter } from "@mui/icons-material";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Addcart } from "../../Slice/Addcart/Addcart";
 
 // const products =[
 //     {
@@ -85,6 +87,7 @@ const Product = () => {
   const [Optioncategories, setOptioncategories]=useState ([])
   const [datafilter,setdatafilter]=useState ({})
   const navigate = useNavigate();
+  const dispatch = useDispatch()
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -279,20 +282,18 @@ const Product = () => {
                           <RemoveRedEyeIcon
                             onClick={() => {
                               navigate(`/Productdeatails/${Product?.id}`);
-                              console.log(Product);
+                              
                             }}
                           />{" "}
                         </Tooltip>
 
                         <Tooltip title="Add in favorite ">
-                          <FavoriteIcon className="" />
+                          <FavoriteIcon  className="" />
                         </Tooltip>
 
                         <Tooltip title="Add to cart">
                           <AddShoppingCartIcon
-                            onClick={() => {
-                              Carthandler(Product);
-                            }}
+                           onClick={()=>dispatch(Addcart())}
                           />
                         </Tooltip>
                       </Box>

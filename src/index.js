@@ -14,6 +14,8 @@ import Signin from './componants/outh/Signin/Signin';
 import Errorpage from './componants/error/Errorpage';
 import Productdeatails from './componants/product-details/Productdeatails';
 import Layout from './componants/Layout/Layout';
+import { Provider } from 'react-redux';
+import { store } from './Store';
 
 
 
@@ -45,9 +47,9 @@ element:<Productdeatails/>
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
- 
-    // <App />
+ <Provider store={store}>
+   
     <RouterProvider  router={router}/>
-  
+    </Provider>
 );
 

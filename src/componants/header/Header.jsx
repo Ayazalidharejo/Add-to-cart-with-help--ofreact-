@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { styled, alpha } from '@mui/material/styles';
+import { alpha, styled } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -18,6 +18,7 @@ import MoreIcon from '@mui/icons-material/MoreVert';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import CartList from '../cart_list/Cart_List';
 import { Link } from 'react-router-dom';
+import {  useSelector } from 'react-redux';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -63,9 +64,13 @@ export default function Header() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const[CartItems,setCartItems]=React.useState([])
+  const Count =useSelector((state)=>state.Counter)
+  console.log(Count);
+  
+  
 
 
-  console.log(CartItems?.length,'CartItemsCartItems');
+ 
   
 
   const [open, setOpen] = React.useState(false);
@@ -139,7 +144,7 @@ export default function Header() {
     >
       <MenuItem>
         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={CartItems?.length } color="error">
+          <Badge badgeContent={Count?.value } color="error">
             <ShoppingCartIcon  onClick={toggleDrawer(true)}/>
           </Badge>
         </IconButton>
@@ -175,11 +180,11 @@ export default function Header() {
 
 
 
-  React.useEffect(() => {
-    const CartItemArray = localStorage.getItem("CartList");
-    const parsedCartItemArray = JSON.parse(CartItemArray) || [];
-    setCartItems(parsedCartItemArray);
-  }, []);
+  // React.useEffect(() => {
+  //   const CartItemArray = localStorage.getItem("CartList");
+  //   const parsedCartItemArray = JSON.parse(CartItemArray) || [];
+  //   setCartItems(parsedCartItemArray);
+  // }, []);
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -213,7 +218,7 @@ export default function Header() {
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={CartItems?.length} color="error">
+              <Badge badgeContent={Count?.value} color="error">
                 <ShoppingCartIcon  onClick={toggleDrawer(true)} />
               </Badge>
             </IconButton>
