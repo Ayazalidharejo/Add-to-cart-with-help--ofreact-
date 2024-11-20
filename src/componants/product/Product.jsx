@@ -31,8 +31,10 @@ import { Filter } from "@mui/icons-material";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Addcart } from "../../Slice/Addcart/Addcart";
+import { addProduct } from "../ProductSlice/ProductSlice";
+import { ToastContainer, toast } from 'react-toastify';
 
 // const products =[
 //     {
@@ -87,7 +89,17 @@ const Product = () => {
   const [Optioncategories, setOptioncategories]=useState ([])
   const [datafilter,setdatafilter]=useState ({})
   const navigate = useNavigate();
+  // const { isToast } = useSelector((state) => state.products);
+  // console.log(isToast, "isToast");
+const {Istoast} = useSelector((state)=>state.Products)
+console.log(Istoast,"Istoast");
+
   const dispatch = useDispatch()
+ 
+ 
+  
+  const [filteredProducts, setFilteredProducts] = useState(products);
+  
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -97,7 +109,7 @@ const Product = () => {
     setOpenAlert(false);
   };
   const [Cartlist, setCartlist] = useState([]);
-  console.log(Cartlist);
+
 
   const Carthandler = (Product) => {
     const isExits = Cartlist.find((Cart) => Cart.id === Product.id);
@@ -132,6 +144,7 @@ const Product = () => {
 ;
 
   useEffect(() => {
+    // toast("Wow so easy!")
     const Fetchproducts = async () => {
       try {
         setisloading(true);
@@ -153,7 +166,7 @@ const Product = () => {
 
 
           })
-          console.log( filtercategoties);
+          
           const uniquecategories = filtercategoties.filter((item, index, self) => index === self.findIndex((i) => i.value === item.value))
          
 
@@ -181,9 +194,16 @@ const Product = () => {
     }
   }, [datafilter, products]); 
   
-  
+  useEffect(() => {
+    
+    if (Istoast) {
+      toast("Product Already Added!")
+    }
+    }, [Istoast]);
   return (
     <>
+     
+     <ToastContainer />
       <Box className="container mt-3 d-flex justify-content-between">
         <TextField
           onChange={Searchhandler}
@@ -218,6 +238,10 @@ const Product = () => {
       ) : (
         <Grid container className="container mt-5">
           {products?.map((Product, index) => {
+            console.log(Product ,"product");
+
+          
+            
             return (
               <>
                 <Grid
@@ -293,7 +317,7 @@ const Product = () => {
 
                         <Tooltip title="Add to cart">
                           <AddShoppingCartIcon
-                           onClick={()=>dispatch(Addcart())}
+                           onClick={()=>dispatch(addProduct(Product))}
                           />
                         </Tooltip>
                       </Box>

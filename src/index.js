@@ -16,6 +16,7 @@ import Productdeatails from './componants/product-details/Productdeatails';
 import Layout from './componants/Layout/Layout';
 import { Provider } from 'react-redux';
 import { store } from './Store';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
@@ -24,7 +25,7 @@ const router = createBrowserRouter([
     path: "/",
     element: <Layout />,
     children:[{
-path:"",
+path:"/",
 element :< App/>,
 
     }],
