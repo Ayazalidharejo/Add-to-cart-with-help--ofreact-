@@ -45,6 +45,9 @@ const ProductSlice =createSlice({
         
 
       },
+      RemoveItem:(state,action)=>{
+        state.items=state.items.filter((item)=> item.id !==action.payload.id)
+      }
     } 
 
    
@@ -54,5 +57,5 @@ const ProductSlice =createSlice({
 
 
 
-export const {addProduct,increasequanitity,dicrementquanitity}=  ProductSlice.actions
+export const {addProduct,increasequanitity,dicrementquanitity,RemoveItem}=  ProductSlice.actions
 export default ProductSlice.reducer

@@ -64,8 +64,8 @@ export default function Header() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const[CartItems,setCartItems]=React.useState([])
-  const Count =useSelector((state)=>state.Counter)
-  console.log(Count);
+  const {items} =useSelector((state)=>state.Products)
+ 
   
   
 
@@ -144,7 +144,7 @@ export default function Header() {
     >
       <MenuItem>
         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={Count?.value } color="error">
+          <Badge badgeContent={items?.length } color="error">
             <ShoppingCartIcon  onClick={toggleDrawer(true)}/>
           </Badge>
         </IconButton>
@@ -218,7 +218,7 @@ export default function Header() {
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={Count?.value} color="error">
+              <Badge badgeContent={items?.length} color="error">
                 <ShoppingCartIcon  onClick={toggleDrawer(true)} />
               </Badge>
             </IconButton>
