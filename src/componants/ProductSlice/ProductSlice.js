@@ -7,6 +7,7 @@ const ProductSlice =createSlice({
     initialState:{
         items:[],
         Istoast:false,
+        Productadede:false,
        
     },
     reducers:{
@@ -18,8 +19,12 @@ const ProductSlice =createSlice({
         const IsExist = state.items.find(item=> item.id === action.payload.id)
         if (IsExist) {
         state.Istoast=true;
+        state.Productadede=false;
         }else{
+          state.Istoast=false;
+       
             state.items.push({...action.payload,quanitity:1})
+            state.Productadede=true;
         }
   
 

@@ -7,24 +7,30 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { dicrementquanitity, increasequanitity, RemoveItem } from '../ProductSlice/ProductSlice';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Product from '../product/Product';
 
 const CartList = (props) => {
   const { open, toggleDrawer } = props;
   const [CartItems, setCartItems] = useState([]);
   const { items } = useSelector((state) => state.Products)
   const dispatch = useDispatch()
+  
+console.log(items,"ayaz");
+
+  const TotalPrice=items?.length  && items.reduce((sum,item)=>sum+item?.price*item?.quanitity,0);
+
+  console.log(TotalPrice);
+  
 
 
 
 
 
-
-
-  useEffect(() => {
-    const CartItemArray = localStorage.getItem("CartList");
-    const parsedCartItemArray = JSON.parse(CartItemArray) || [];
-    setCartItems(parsedCartItemArray);
-  }, []);
+  // useEffect(() => {
+  //   const CartItemArray = localStorage.getItem("CartList");
+  //   const parsedCartItemArray = JSON.parse(CartItemArray) || [];
+  //   setCartItems(parsedCartItemArray);
+  // }, []);
 
   return (
     <div>
@@ -39,7 +45,7 @@ const CartList = (props) => {
           {!items.length?<Typography className=' text-center'  variant='h6'>Noyhing to show</Typography> :items?.map((item, index) => (
             <Box key={index} className="d-flex justify-content-between align-items-center">
               <div className='d-flex align-items-center'>
-                <img width="70px" src={item?.image} alt={item?.name} />
+                <img className='my-2' width="70px" src={item?.image} alt={item?.name} />
                 <Typography variant="body1">{item?.title?.length >= 13
                   ? `${item?.title.slice(0, 13)}...`
                   : item?.title}</Typography>
@@ -60,10 +66,16 @@ const CartList = (props) => {
 
 
         </Box>
-        <Box className="d-flex justify-content-between bg-secondary py-2 w-100 rounded text-white px-2 position-absolute top-100 start-50 translate-middle align-items-center ">  
-          <Typography variant='body2'> TotalPrice</Typography>
-          <Typography variant='h6'> $120</Typography>
-        </Box>
+        <Box className="       position-relative">
+       
+        <Box className="d-flex text-white justify-content-between align-items-center position-sticky bottom-0 start-50 bg-secondary py-2 w-100 rounded-2 px-2 mt-2">  
+          <Typography  variant='body2'> TotalPrice</Typography>
+        <Typography variant='h6'> ${TotalPrice} </Typography> </Box>
+  {/* Sticky footer */}
+ 
+</Box>
+
+     
         </Box>
       </Drawer>
     </div>

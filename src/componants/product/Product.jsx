@@ -91,7 +91,7 @@ const Product = () => {
   const navigate = useNavigate();
   // const { isToast } = useSelector((state) => state.products);
   // console.log(isToast, "isToast");
-const {Istoast} = useSelector((state)=>state.Products)
+const {Istoast,Productadede} = useSelector((state)=>state.Products)
 console.log(Istoast,"Istoast");
 
   const dispatch = useDispatch()
@@ -147,7 +147,7 @@ console.log(Istoast,"Istoast");
     // toast("Wow so easy!")
     const Fetchproducts = async () => {
       try {
-        setisloading(true);
+       
         const Products = await axios.get("https://fakestoreapi.com/products");
 
         if (Products.status === 200) {
@@ -172,7 +172,7 @@ console.log(Istoast,"Istoast");
 
           setOptioncategories(uniquecategories)
         } else {
-          setisloading(true);
+        
         }
       } catch (error) {
         console.log(error);
@@ -195,11 +195,16 @@ console.log(Istoast,"Istoast");
   }, [datafilter, products]); 
   
   useEffect(() => {
-    
+    if (Productadede) {
+      toast("Product Added successfully!")
+    }
     if (Istoast) {
       toast("Product Already Added!")
     }
-    }, [Istoast]);
+   
+    }, [Istoast,Productadede]);
+
+  
   return (
     <>
      
@@ -238,7 +243,7 @@ console.log(Istoast,"Istoast");
       ) : (
         <Grid container className="container mt-5">
           {products?.map((Product, index) => {
-            console.log(Product ,"product");
+            // console.log(Product ,"product");
 
           
             
