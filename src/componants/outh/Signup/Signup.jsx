@@ -1,4 +1,5 @@
 import {
+  Autocomplete,
   Box,
   Button,
   Grid,
@@ -20,6 +21,7 @@ import { useForm } from "react-hook-form";
 import {  Controller } from "react-hook-form";
 const schema = yup.object({
   firstName: yup.string().min(3).max(10).required("First Name is requied"),
+  lastname: yup.string().min(3).max(10).required("second Name is requied"),
   email: yup.string().required("Emai is requied"),
   Password: yup.string().required("Password is requied"),
   
@@ -46,7 +48,7 @@ const Signup = () => {
   const { control, handleSubmit, formState: { errors } } = useForm({
     
     defaultValues: {
-      firstname: "",
+      firstName: "",
       lastname: "",
       email: "",
       Password: "",
@@ -117,47 +119,54 @@ const Signup = () => {
                   />
                    <p className="text-danger">{errors?.  email?.message}</p>
                 </Grid>
-                <Grid className="mb-2" item xs={6} md={6} lg={11.9}>
-                  
-                  <OutlinedInput
-                  
-                    type="showPassword"
-                    fullWidth
-                    size="small"
-                    placeholder="Password"
-                    id="outlined-adornment-weight"
-                    type={showPassword ? "text" : "password"}
-                    
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label={
-                            showPassword
-                              ? "hide the password"
-                              : "display the password"
-                              
-                          }
-                          edge="end"
-                          onClick={() => {
-                            setShowPassword(!showPassword);
-                          }}
-                        >
-                           
-                          {showPassword ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                    aria-describedby="outlined-weight-helper-text"
-                    inputProps={{
-                      "aria-label": "weight",
-                    }}
+                <Grid className="mb-2" item xs={12} md={6} lg={11.9}>
+                  <Controller
+                    name="Password"
+                    control={control}
+                    render={({ field }) => (
+                      <OutlinedInput
+                        {...field}
+                        fullWidth
+                        size="small"
+                        placeholder="Password"
+                        type={showPassword ? "text" : "password"}
+                        error={errors?.Password?.message || ""}
+
+                        endAdornment={
+                          <InputAdornment position="end">
+                            <IconButton
+                              onClick={() => setShowPassword(!showPassword)}
+                              edge="end"
+                              aria-label={showPassword ? "Hide password" : "Show password"}
+                            >
+                              {showPassword ? <VisibilityOff /> : <Visibility />}
+                            </IconButton>
+                          </InputAdornment>
+                        }
+                      />
+                    )}
                   />
-                  <p className="text-danger">{errors?.  Password?.message}</p>
-
-
-
-
-                  
+                  <p className="text-danger">{errors?.Password?.message}</p>
+                </Grid>
+                <Grid className=" mb-3" item xs={12} md={6} lg={11.9}>
+                <Controller
+                    name="Role"
+                    control={control}
+                    render={({ field }) =>
+                      <Autocomplete fullWidth
+                    {...field}
+                    onChange={((e,value)=>{
+                      field.onChange(value?.value)
+                    })}
+                    disablePortal
+                    options={[{label:"User",value:"User"},{label:"Admin",value:"Admin"}]}
+                 
+                    renderInput={(params) => <TextField  {...params} label="User Role" />}
+                  />
+               
+                }
+                  />
+                   <p className="text-danger">{errors?.  email?.message}</p>
                 </Grid>
                 <Grid item xs={12} md={6} lg={11.9}>
                   <Button type="submit" fullWidth variant="contained">
