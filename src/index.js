@@ -17,6 +17,8 @@ import Layout from './componants/Layout/Layout';
 import { Provider } from 'react-redux';
 import { store } from './Store';
 import 'react-toastify/dist/ReactToastify.css';
+import AddProduct from './componants/Add_Product/AddProduct';
+import ProtectedRounte from './componants/Protected-Rounte/ProtectedRounte';
 
 
 
@@ -34,6 +36,10 @@ element :< App/>,
   {
     path: "/sign-up",
     element: <Signup />
+  },
+  {
+    path: "/Add-product",
+    element: <ProtectedRounte> <AddProduct />  </ProtectedRounte> 
   },
   {
     path: "/sign-in",

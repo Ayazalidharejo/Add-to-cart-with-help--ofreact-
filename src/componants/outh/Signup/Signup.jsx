@@ -19,6 +19,7 @@ import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import { useForm } from "react-hook-form";
 import {  Controller } from "react-hook-form";
+import { json } from "react-router-dom";
 const schema = yup.object({
   firstName: yup.string().min(3).max(10).required("First Name is requied"),
   lastname: yup.string().min(3).max(10).required("second Name is requied"),
@@ -41,7 +42,7 @@ const Item = styled(Paper)(({ theme }) => ({
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
 
-
+ 
 
 
   
@@ -73,7 +74,11 @@ const Signup = () => {
 
           <form
             onSubmit={handleSubmit((data) => {
+            
               console.log(data);
+      const Userjson = JSON.stringify(data);
+
+               localStorage.setItem("User", Userjson)
             })}
           >
             <Box>
